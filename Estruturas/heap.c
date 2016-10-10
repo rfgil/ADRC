@@ -2,9 +2,6 @@
 
 #include "heap.h"
 
-#define GREATER 1
-#define SMALLER 2
-
 struct heap {
   int (*compare) (void *, void *);
   int n_elements;               /* # elements in heap */
@@ -32,10 +29,12 @@ void freeHeap(Heap * heap, void (*freeItem)(void *)){
     freeItem(heap->heapdata[i]);
   }
 
+  free(heap->heapdata);
   free(heap);
 }
 
 void InsertInHeap(Heap * heap, void * item){
+  void * aux;
   int pos;
 
   if (heap->n_elements == heap->size){
@@ -44,15 +43,18 @@ void InsertInHeap(Heap * heap, void * item){
 
   //Define a posição do novo item como sendo o final do heap
   pos = heap->n_elements;
-
-  //Procurar a posição correcta do item no heap (e faz as trocas necessárias para poder inserir nessa posição)
-  while( (pos > 0) && heap->compare(heap->heapdata[(pos - 1) / 2], item) == GREATER ){
-    heap->heapdata[(pos - 1) / 2] = heap->heapdata[pos];
-    pos = (pos - 1) / 2;
-  }
+  heap->n_elements ++;
 
   heap->heapdata[pos] = item;
-  heap->n_elements ++;
+
+  //Procurar a posição correcta do item no heap (e faz as trocas necessárias para poder inserir nessa posição)
+  while( (pos > 0) && heap->compare(heap->heapdata[(pos - 1) / 2], heap->heapdata[pos]) == GREATER ){
+    aux = heap->heapdata[(pos - 1) / 2];
+    heap->heapdata[(pos - 1) / 2] = heap->heapdata[pos];
+    heap->heapdata[pos] = aux;
+
+    pos = (pos - 1) / 2;
+  }
 }
 
 void * RemoveMaxFromHeap(Heap * heap){
@@ -88,4 +90,8 @@ void * RemoveMaxFromHeap(Heap * heap){
   }
 
   return NULL;
+}
+
+int getHeapNElements(Heap * heap){
+  return heap->n_elements;
 }

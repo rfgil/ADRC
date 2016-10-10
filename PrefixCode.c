@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "Estruturas/list.h"
 #include "Estruturas/tree.h"
 
 #define MAX_STR_LENGHT 128
@@ -21,29 +20,22 @@ void freeCodeInfo(void * item){
   free(item);
 }
 
-void GenerateCode(Node * treeRoot, ListElement ** listCode, char * prefix){
+void GenerateCode(Node * treeRoot, char * prefix){
   char str[MAX_STR_LENGHT];
 
   if ( getChild0(treeRoot) != NULL ){
     strcpy(str, prefix);
-    GenerateCode(getChild0(treeRoot), listCode, strcat(str, "0"));
+    GenerateCode(getChild0(treeRoot), strcat(str, "0"));
   }
 
   if ( getChild1(treeRoot) != NULL ){
     strcpy(str, prefix);
-    GenerateCode(getChild1(treeRoot), listCode, strcat(str, "1"));
+    GenerateCode(getChild1(treeRoot), strcat(str, "1"));
   }
 
   if (getChild0(treeRoot) == NULL && getChild1(treeRoot) == NULL) {
-    struct codeInfo * item;
-
-    item = malloc(sizeof(struct codeInfo));
-
-    item->symbol = *((char *) getItem(treeRoot));
-    item->prefix = malloc((strlen(prefix) + 1)*sizeof(char));
-    strcpy(item->prefix, prefix);
-
-    *listCode = insertInList(*listCode, item);
+    //Imprime o elemento
+    printf("%c - %s\n", *((char *) getItem(treeRoot)), prefix);
   }
 }
 
@@ -77,7 +69,6 @@ int main(){
   char symbol;
   FILE * fp;
 
-  ListElement * listCode;
   Node * treeRoot;
 
   fp = fopen("symbols", "r");
@@ -101,23 +92,18 @@ int main(){
 
   fclose(fp);
 
-  listCode = newList();
-  GenerateCode(treeRoot, &listCode, "");
+  GenerateCode(treeRoot, "");
 
-  //Imprime o prefix code associado à árvore gerada
-  printList(listCode, printCodeInfo);
-
-  printf("Introduza uma string de bits para descodificar!\n");
+  printf("Introduza uma string de bits para descodificar!\n(Enter para sair)\n");
   while(fgets(buffer, MAX_STR_LENGHT, stdin)[0] != '\n'){
-    buffer[strlen(buffer) - 1] = '\0';
-    OutString[0] = '\0';
+    buffer[strlen(buffer) - 1] = '\0'; //Remove o \n que o fgets coloca no final das strings
+    OutString[0] = '\0'; //Limpa o conteúdo de Outrstring
 
     Decode(treeRoot, buffer, OutString);
     printf("%s\n", OutString);
   }
 
   freeTree(treeRoot, free);
-  freeList(listCode, freeCodeInfo);
 
   return 0;
 }
