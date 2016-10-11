@@ -2,7 +2,7 @@
 
 Para comilar o PrefixCode:
 
-    gcc -Wall -g PrefixCode.c Estruturas/tree.c Estruturas/list.c -o PrefixCode
+    gcc -Wall -g PrefixCode.c Estruturas/tree.c -o PrefixCode
 
 Para compilar o Huffman:
 

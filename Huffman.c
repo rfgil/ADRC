@@ -16,17 +16,21 @@ typedef struct _symbol {
 void GenerateCode(Node * treeRoot, char * prefix){
   char str[MAX_STR_LENGHT];
 
+  //Avalia o filho 0
   if ( getChild0(treeRoot) != NULL ){
     strcpy(str, prefix);
     GenerateCode(getChild0(treeRoot), strcat(str, "0"));
   }
 
+  //avalia o filho 1
   if ( getChild1(treeRoot) != NULL ){
     strcpy(str, prefix);
     GenerateCode(getChild1(treeRoot), strcat(str, "1"));
   }
 
+  //Verefica se o node é uma folha
   if (getChild0(treeRoot) == NULL && getChild1(treeRoot) == NULL) {
+    //Imprime o elemento, a sua frequencia e o prefixo
     Symbol * data;
     data = (Symbol*) getItem(treeRoot);
     printf("%c (freq: %d) - %s\n", data->symbol, data->freq, prefix);
@@ -53,7 +57,7 @@ Node * HuffmanCode(Heap * heap){
 
     tree_root = createNode(data, tree_node1, tree_node2);
 
-    //Insere esse node na arvore
+    //Insere esse node no heap
     InsertInHeap(heap, tree_root);
   }
 
