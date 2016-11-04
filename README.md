@@ -1,4 +1,9 @@
-# ADRC Projecto 1
+# ADRC
+
+---
+
+## Projecto 1 
+### Binary prefix codes and Huffman’s codes
 
 Para comilar o PrefixCode:
 
@@ -8,4 +13,10 @@ Para compilar o Huffman:
 
     gcc -Wall -g Huffman.c Estruturas/heap.c Estruturas/tree.c -o Huffman 
 
-O cogigo que me deste dos heaps tem uma falha que é tipo a arvore fica sempre organizada na horizontal a preeencher os espaços e nao como o huffman, e andei a pesquisar codigo eficiente e encontrei este que esta em huffman.c, é para tirar mos a ideia de como é feito que é bue eficiente
+---
+
+## Projecto 2
+### Inter-domain routing
+
+    gcc -Wall -g main.c Estruturas/avl_tree.c Estruturas/list.c Estruturas/fifo.c domains.c -o main
+

@@ -1,0 +1,305 @@
+\documentclass{article}
+\usepackage[portuges]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in, includefoot,footskip=30pt,]{geometry} %Equivalente a fullpage sem estragar o cabeçalho e rodapé
+
+\usepackage{graphicx} %Permite inserir imagens
+\usepackage{mathtools} % mathtools loads the amsmath package automatically
+\usepackage{amssymb}
+
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}%
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}%
+
+\usepackage{float}
+
+\usepackage[hidelinks=true]{hyperref}
+
+\usepackage{enumitem} % Permite adicionar tab a itemizes
+\usepackage{indentfirst}
+\usepackage{subcaption}
+
+
+% ----- Definiçoes para as tabelas -----
+\usepackage{tabularx}
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
+
+
+% ----- Cabeçalho e rodapé -----
+\usepackage{color}
+%\usepackage{xcolor}
+\definecolor{light-gray}{gray}{0.80}
+\definecolor{mylight-gray}{gray}{0.30}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+
+\renewcommand{\headrulewidth}{1pt}
+\renewcommand{\footrulewidth}{0.5pt}
+
+\rhead{\textbf{\large{\textbf{\textsc{Algoritmia e Desempenho em Redes de Computadores}}}} \\ \textsc{Binary prefix codes and Huffman’s codes}}
+\lhead{\includegraphics[scale=0.7]{capa/IST_Logo.png}}
+\rfoot{\textsc{\textcolor{mylight-gray}{Página} \thepage}}
+
+\usepackage{etoolbox}
+\patchcmd{\headrule}{\hrule}{\color{light-gray}\hrule}{}{}
+\patchcmd{\footrule}{\hrule}{\color{light-gray}\hrule}{}{}
+
+
+% ----- Comandos Personalizados -----
+\newcommand{\betamaisum}[0]{\ensuremath{\left( \beta + 1 \right)}}
+
+\newcommand{\volt}[0]{\ensuremath{\ V}}
+\newcommand{\mvolt}[0]{\ensuremath{\ mV}}
+\newcommand{\uvolt}[0]{\ensuremath{\ \mu V}}
+
+\newcommand{\amp}[0]{\ensuremath{\ A}}
+\newcommand{\mamp}[0]{\ensuremath{\ mA}}
+\newcommand{\uamp}[0]{\ensuremath{\ \mu A}}
+
+\newcommand{\mohm}[0]{\ensuremath{\ m \Omega}}
+\newcommand{\ohm}[0]{\ensuremath{\ \Omega}}
+\newcommand{\kohm}[0]{\ensuremath{\ k\Omega}}
+
+\newcommand{\siemen}{\ensuremath{\ S}}
+\newcommand{\msiemen}{\ensuremath{\ mS}}
+\newcommand{\usiemen}{\ensuremath{\ \mu S}}
+\newcommand{\Msiemen}{\ensuremath{\ MS}}
+
+\newcommand{\pfarad}{\ensuremath{\ pF}}
+\newcommand{\ufarad}{\ensuremath{\ \mu F}}
+\newcommand{\nfarad}{\ensuremath{\ nF}}
+
+\newcommand{\Hz}{\ensuremath{\ Hz}}
+\newcommand{\kHz}{\ensuremath{\ kHz}}
+
+\newcommand{\dB}{\ensuremath{\ dB}}
+
+
+\newcommand{\dez}[1]{\ensuremath{\cdot 10^{#1}}}
+
+\newcommand{\barravertical}{\ensuremath{\biggr\rvert}}
+
+% ----- Template para secções subsecções -----
+\usepackage[explicit]{titlesec}
+\usepackage{color, colortbl}
+\usepackage[usenames,dvipsnames]{xcolor}
+
+\titleformat{\section}
+	{\normalfont\Large\scshape}{}{0em}{%\setlength
+	%\fboxsep{9pt}
+	%\colorbox{NavyBlue}
+	{\parbox{\dimexpr\textwidth-2\fboxsep\relax}{
+	\ifnum\thesection>0
+		\thesection\quad#1
+	\else
+		#1
+	\fi}}}
+
+\titleformat{\subsection}{\normalfont\scshape\large}{}{0em}{{#1}}%\thesubsection \ #1}}
+\titleformat{\subsubsection}{\normalfont\scshape}{}{0em}{{#1}}%\thesubsubsection \ #1}}
+\titleformat{\paragraph}{\normalfont\scshape\small}{}{0em}{{#1}}
+
+%\newcommand{\sectionbreak}{\clearpage} %Faz page break antes de cada secção
+
+\usepackage{pdfpages}
+\usepackage[siunitx]{circuitikz}
+
+
+
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+
+\makeatletter
+\renewcommand{\ALG@name}{Algoritmo}
+\makeatother
+
+\makeatletter
+\newenvironment{breakablealgorithm}
+  {% \begin{breakablealgorithm}
+   \begin{center}
+     \refstepcounter{algorithm}% New algorithm
+     \hrule height.8pt depth0pt \kern2pt% \@fs@pre for \@fs@ruled
+     \renewcommand{\caption}[2][\relax]{% Make a new \caption
+       {\raggedright\textbf{\ALG@name~\thealgorithm} ##2\par}%
+       \ifx\relax##1\relax % #1 is \relax
+         \addcontentsline{loa}{algorithm}{\protect\numberline{\thealgorithm}##2}%
+       \else % #1 is not \relax
+         \addcontentsline{loa}{algorithm}{\protect\numberline{\thealgorithm}##1}%
+       \fi
+       \kern2pt\hrule\kern2pt
+     }
+  }{% \end{breakablealgorithm}
+     \kern2pt\hrule\relax% \@fs@post for \@fs@ruled
+   \end{center}
+  }
+\makeatother
+
+
+% ----- DOCUMENTO -----
+\begin{document}
+
+% Inclui a capa (existem pacotes especificos que interferem com os existentes neste documento)
+\includepdf[pages={1}]{capa/capa.pdf}
+\setcounter{page}{1}
+
+\subsection{Algoritmo \texttt{GenerateCode}}
+
+O objetivo deste algoritmo é imprimir no ecrã o código de prefixo binário que está representado sob a forma de uma árvore binária em que os símbolos se encontram nas folhas.
+
+\begin{algorithm}[H]
+\caption{}
+\label{al:generatecode}
+\begin{algorithmic}
+\Function{GenerateCode}{$node\_arvore$, $prefixo$}
+	\State $filho0 := \Call{Filho0}{node\_arvore}$
+	\State $filho1 := \Call{Filho1}{node\_arvore}$
+	\State
+	\If { $filho0$ }
+		\State \Call{GenerateCode}{$filho0$, $prefixo+'0'$}
+	\EndIf
+	\If { $filho1$ }
+		\State \Call{GenerateCode}{$filho1$, $prefixo+'1'$}
+	\EndIf
+	\State
+	\If { $($ \textbf{not} $filho0$ $)$ \textbf{and} $($ \textbf{not} $filho1$ $)$} \Comment Significa que $node\_arvore$ é uma folha
+		\State $simbolo := \Call{Elemento}{node\_arvore}$
+		\State \Call{Print}{$simbolo$, $prefixo$}
+	\EndIf
+
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+Tendo em conta o objetivo pretendido, é necessário percorrer todos os elementos da árvore binária. Uma vez que se pretende um algoritmo eficiente, é necessário que cada elemento da árvore seja percorrido apenas uma vez. Com isto em mente desenvolveu-se o algoritmo \ref{al:generatecode}. 
+
+Este algoritmo funciona por recorrência, ou seja para cada elemento da árvore a própria função é chamada com os filhos desse elemento como raiz da árvore e o prefixo é alterado tendo em conta se se seguiu para o filho $0$ ou $1$. Deste modo todos os elementos são percorridos apenas uma vez.
+
+Esta pesquisa na árvore é do tipo \textit{depth first search} uma vez que a árvore é atravessada passando primeiro em todos os filhos de um elemento antes de visitar o seu irmão. No entanto, não é possível especificar o seu tipo (\textit{Pre-order}, \textit{In-order} ou \textit{Post-order}) uma vez que só são efetuadas ações, imprimir neste caso, para os folhas da árvore que são sempre percorridas na mesma ordem relativa em todos os tipos.
+
+
+\subsection{Algoritmo \texttt{Decode}}
+
+Com este algoritmo pretende-se descodificar uma string de bits tendo em conta um código de prefixo binário representado sob a forma de uma árvore binária.
+
+
+
+\begin{breakablealgorithm}
+\caption{}
+\label{al:decode}
+\begin{algorithmic}
+\Function{Decode}{$node\_arvore$, $in\_string$, $out\_string$}
+	\State $aux := node\_arvore$
+	\State $pos := 0$
+
+	\While {$pos < \Call{Tamanho}{in\_string$}}
+		\If {$in\_string(pos) = 0$}
+			\State $aux := \Call{Filho0}{node\_arvore}$
+		\Else
+			\State $aux := \Call{Filho1}{node\_arvore}$
+		\EndIf
+		
+		
+		\If { $\Call{éFolha}{aux}$ }
+			\State $simbolo := \Call{Elemento}{node\_arvore}$ \Comment Foi encontrado o símbolo que corresponde aos bits introduzidos
+			\State $out\_string := out\_string + simbolo$
+			\State $aux := node\_arvore$ \Comment Volta à raiz da árvore
+		\EndIf
+		
+		\State $pos := pos + 1$
+		
+	\EndWhile
+	
+\EndFunction
+\end{algorithmic}
+\end{breakablealgorithm}
+
+A descodificação de um código de prefixo binário funciona da seguinte forma: a partir da raiz da árvore que representa o código avança-se para o seu filho 0 ou 1 em função do primeiro bit a descodificar. Procede-se da mesma forma para o segundo bit e assim sucessivamente até que se chegue a uma folha da árvore. Chegar à folha, significa que se encontrou o símbolo cujo código de prefixo é a sequência de bits que conduziu até àquela posição. De seguida volta-se à raiz da árvore e repete-se o processo. No algoritmo \ref{al:decode} encontra-se o pseudo-código associado a esta descrição.
+
+\subsection{Programa \texttt{PrefixCode} }
+
+Com este programa pretende-se criar, a partir de um conjunto de símbolos armazenado num ficheiro, um qualquer código de prefixo binário, mostrar ao utilizador o código escolhido e de seguida descodificar as mensagens codificadas introduzidas pelo utilizador.
+
+\begin{algorithm}[H]
+\caption{}
+\label{al:decode}
+\begin{algorithmic}
+\Procedure{PrefixCode}{$ficheiro$}
+	\State $tree\_root := $ \textbf{null}
+	\While {$($ $ simbolo\_lido := $ \Call{LerSimbolo}{$ficheiro$} $) \neq EOF$} \Comment Cria uma árvore com os símbolos
+		\State $nova\_folha := \Call{CriarNode}{simbolo := simbolo\_lido$, $filho0 := $ \textbf{null}, $filho1 := $ \textbf{null}$}$
+		
+		\If {$tree\_root = $ \textbf{null}}
+			\State $tree\_root := nova\_folha$
+		\Else
+			\State $tree\_root := \Call{CriarNode}{simbolo := $ \textbf{null}, $filho0 := tree\_root$, $filho1 := nova\_folha}$
+		\EndIf
+	\EndWhile
+	
+	\State \Call{GenerateCode}{$tree\_root$, $''$} \Comment Imprime o codigo de prefixo binário representado pela árvore
+
+	
+	\State $in\_string := \Call{LerInput}$
+	\State \Call{Decode}{$tree\_root$, $in\_string$, $out\_string := out$}
+	\State \Call{Imprimir}{$out$}
+
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+Este programa gera um árvore a partir dos elementos que recebe do ficheiro. Essa árvore é criada à medida que os símbolos são recebidos e não há nenhuma distinção entre eles. O método com que a árvore é criada é muito simples: Ao ler um símbolo, este é colocado num node de uma árvore sem filhos, ou seja numa folha da árvore. De seguida cria-se um outro node cujos filhos são a folha acabada de criar e a árvore construída até ao momento. 
+
+Para as restantes funcionalidades pretendidas para este programa são utilizados os algoritmos anteriores, já discutidos.
+
+
+\subsection{Algoritmo \texttt{HuffmanCode}}
+
+O objetivo deste algoritmo é construir uma árvore binária que represente um código de prefixo binário tendo em conta que dentro do conjunto de símbolos a codificar cada símbolo tem a sua frequência relativa. Com essa informação pretende-se que os símbolos mais frequentes obtenham código o inferior a outros com menor frequência.
+
+O método que permite obter o código de prefixo binário ideal foi inventado por David Huffman e é este que se pretende implementar. O método consiste em, inicialmente, colocar cada elemento do de um conjunto num node de uma árvore. De seguida ir juntando os elementos de menor frequência como filhos de um novo node de uma árvore, considerando agora que a frequência desse node é a soma da frequência dos seus filhos e repetindo o processo tendo em conta o node acabado de criar.
+
+\begin{algorithm}[H]
+\caption{}
+\label{al:huffmancode}
+\begin{algorithmic}
+\Function{HuffmanCode}{$heap$}
+	\While {$\Call{NumElem}{heap} > 1$}
+		\State $tree\_node1 := \Call{RemoverMax}{heap}$
+		\State $tree\_node2 := \Call{RemoverMax}{heap}$
+		
+		\State		
+		
+		\State $frequencia1 := \Call{FrequeciaDoNode}{tree\_node1}$
+		\State $frequencia2 := \Call{FrequeciaDoNode}{tree\_node2}$
+		
+		\State
+		
+		\State $new\_tree := \Call{CriarNode}{simbolo := $ \textbf{null}, $frequencia := frequencia1 + frequencia2$, $filho0 := tree\_node1$, $filho1 := tree\_node2}$
+		
+		\State
+		
+		\State \Call{InserirNoHeap}{$heap$, $new\_tree$}
+	\EndWhile
+	
+	\State \textbf{return} \Call{RemoverMax}{heap} \Comment Nesta fase o heap só terá um elemento: a raiz da árvore pretendida
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+O segredo deste algoritmo \ref{al:huffmancode} é a estrutura de dados utilizada para organizar os elementos. Ou seja, o algoritmo depende quase exclusivamente de uma estrutura de dados eficiente para que ele próprios seja eficiente. Assim sendo é necessário utilizar uma fila de prioridades que permita adicionar e remover elementos da melhor forma possível. A estrutura que melhor se adapta a estas condições é o acervo, uma vez que a sua complexidade é $\mathcal{O}(\log{}n)$ tanto para inserir um elemento como para remover o elemento com maior prioridade. Uma vez que se pretende sempre remover o elemento de maior prioridade, optou-se por esta estrutura.
+
+O que irá definir a prioridade de cada elemento no acervo será a frequência. Pretende-se remover sempre os dois elementos de menor frequência. Por essa razão o acervo será um acervo de mínimos, ou seja no topo do acervo encontrar-se-á o elemento com menor prioridade, neste caso menor frequência.
+
+O elemento introduzido será um node de uma árvore. Esses nodes terão uma frequência e um símbolo associado. O símbolo de cada node poderá ser o valor \textit{null} caso esse node não seja uma folha e portanto não tenha nenhum símbolo associado. No entanto o node não deixa de ter uma frequência que será a frequência do próprio símbolo ou a soma da frequência dos seus filhos.
+
+\subsection{Programa \texttt{Huffman}}
+
+Com este programa pretende-se que seja lido de um ficheiro um conjunto de símbolos e a sua frequência relativa e, com esta informação esta informação, construir um código de prefixo binário de acordo com o método de Huffman. Finalmente, esse código deve ser impresso para o utilizador.
+
+Este programa depende quase exclusivamente do algoritmo \ref{al:huffmancode}, discutido na secção anterior. É apenas necessário preparar os parâmetros que esse algoritmo irá receber. Deste modo, é necessário criar um heap e nele inserir todos os elementos do conjunto de símbolos, bem como as suas frequências, dentro de nodes, sem filhos, de uma árvore. Ou seja os elementos do heap serão nodes de uma árvore. Esse node conterá, para além de informação sobre os seus filhos (que serão nulos nesta fase inicial), o símbolo e a frequência relativa do mesmo.
+
+Depois de executado o algoritmo \ref{al:huffmancode}, basta chamar o algoritmo \ref{al:generatecode}, \texttt{GenerateCode}, para imprimir o código de prefixo binário construído.
+
+
+\end{document}
+
