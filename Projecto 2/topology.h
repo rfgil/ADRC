@@ -14,9 +14,7 @@ typedef struct domain {
   List * peers;
 } Domain;
 
-
 AVLTree * LoadTopology(FILE * network_file);
-
 void freeTopology(AVLTree * tree);
 
 #endif

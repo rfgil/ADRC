@@ -50,24 +50,35 @@ void * RemoveFifo(Fifo * fifo){
     Element * last_element;
 
     last_element = fifo->last;
-    //Coloca o apontador last a apontar para o penultimo elemento
-    fifo->last = last_element->ant;
-    last_element->next = NULL;
+
+    if (fifo->first == last_element){
+      fifo->first = NULL;
+      fifo->last = NULL;
+    } else {
+
+      //Coloca o apontador last a apontar para o penultimo elemento
+      fifo->last = last_element->ant;
+      //Coloca o apontador next do novo ultimo elemento a apontar para null
+      fifo->last->next = NULL;
+    }
 
     item = last_element->item;
-    free(last_element);
+    free(last_element); // Liberta a memoria do elemento
     return item;
   }
   return NULL;
 }
 
-/*
-void freeElements(Element * element, void (*freeItem)(void *)){
 
+static void freeElements(Element * element, void (*freeItem)(void *)){
+  if (element != NULL){
+    freeElements(element->next, freeItem);
+    freeItem(element->item);
+    free(element);
+  }
 }
 
 void freeFifo(Fifo * fifo, void (*freeItem)(void *)){
   freeElements(fifo->first, freeItem);
   free(fifo);
 }
-*/

@@ -12,6 +12,4 @@ void freeList(List * list, void (*freeItem)(void *));
 
 List * removeFirstList(List * list, void ** domain);
 
-int isEmptyList(List * list);
-
 #endif

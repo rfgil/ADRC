@@ -8,4 +8,5 @@ Fifo * newFifo();
 void InsertFifo(Fifo * fifo, void * item);
 void * RemoveFifo(Fifo * fifo);
 
+void freeFifo(Fifo * fifo, void (*freeItem)(void *));
 #endif

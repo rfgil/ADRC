@@ -1,9 +1,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "domains.h"
+#include "topology.h"
 
-int compare(int a, int b){
+static void doNothing(void * item){
+  return;
+}
+
+static int compare(int a, int b){
   if (a > b){
     return GREATER;
   } else if (a < b) {
@@ -13,14 +17,18 @@ int compare(int a, int b){
   }
 }
 
-int compareDomains(void * item1, void * item2){
+
+static int compareDomains(void * item1, void * item2){
+  //Compara dois dominios
   int id1 = ((Domain *) item1)->id;
   int id2 = ((Domain *) item2)->id;
 
   return compare(id1, id2);
 }
 
-int compareId_Domain(void * item1, void * item2){
+static int compareId_Domain(void * item1, void * item2){
+  //Compara um id (de um possivel dominio) com um dominio
+  // É necessário para confirmar se determinado id já existe na árvore antes de o inserir
   int id1 = *((int *) item1);
   int id2 = ((Domain *) item2)->id;
 
@@ -85,11 +93,7 @@ AVLTree * LoadTopology(FILE * network_file){
   return tree;
 }
 
-void doNothing(void * item){
-  return;
-}
-
-void freeDomain(void * item){
+static void freeDomain(void * item){
   Domain * domain = item;
   freeList(domain->clients, doNothing);
   freeList(domain->peers, doNothing);

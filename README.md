@@ -18,5 +18,5 @@ Para compilar o Huffman:
 ## Projecto 2
 ### Inter-domain routing
 
-    gcc -Wall -g main.c Estruturas/avl_tree.c Estruturas/list.c Estruturas/fifo.c domains.c -o main
+    gcc -Wall -g main.c Estruturas/avl_tree.c Estruturas/list.c Estruturas/fifo.c topology.c route.c -o main
 

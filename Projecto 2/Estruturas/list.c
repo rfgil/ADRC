@@ -24,10 +24,6 @@ void freeList(List * element, void (*freeItem)(void *)){
   }
 }
 
-int isEmptyList(List * list){
-  return list == NULL;
-}
-
 List * removeFirstList(List * list, void ** domain){
   if (list != NULL){
     (*domain) =  list->item;

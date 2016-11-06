@@ -32,15 +32,15 @@ int countElementsAvlTree(AVLTree * tree){
   return tree->n_elements;
 }
 
-int max(int a, int b){
+static int max(int a, int b){
   return a > b ? a : b;
 }
 
-int getHeight(Node * node){
+static int getHeight(Node * node){
   return node == NULL ? 0 : node->height;
 }
 
-Node * rightRotate(Node * y){
+static Node * rightRotate(Node * y){
   Node * x = y->left;
   Node * T2 = x->right;
 
@@ -56,7 +56,7 @@ Node * rightRotate(Node * y){
   return x;
 }
 
-Node * leftRotate(Node * x){
+static Node * leftRotate(Node * x){
   Node * y = x->right;
   Node * T2 = y->left;
 
@@ -72,7 +72,7 @@ Node * leftRotate(Node * x){
   return y;
 }
 
-Node * insertNode(Node * root, Node * new_node, int (*compareItems)(void *, void *)){
+static Node * insertNode(Node * root, Node * new_node, int (*compareItems)(void *, void *)){
   int balance;
 
   if (root == NULL ) {
@@ -159,7 +159,7 @@ void * findAvlTree(AVLTree * tree, void * identifier){
   return NULL;
 }
 
-void freeNodes(Node * node, void (*freeItem)(void *)){
+static void freeNodes(Node * node, void (*freeItem)(void *)){
   if (node != NULL){
     freeNodes(node->left, freeItem);
     freeNodes(node->right, freeItem);
