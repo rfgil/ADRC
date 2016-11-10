@@ -20,3 +20,8 @@ Para compilar o Huffman:
 
     gcc -Wall -g main.c Estruturas/avl_tree.c Estruturas/list.c Estruturas/fifo.c topology.c route.c -o main
 
+Responder à questão:
+Quao mais longe é o caminho quando estou restrito a rotas comercias?
+
+
+`Substituir flags -Wall e -g por -O para melhor performance`

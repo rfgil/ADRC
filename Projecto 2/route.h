@@ -2,7 +2,7 @@
 #define ROUTE_H_INCLUDED
 
 #include <stdio.h>
-
+#include "topology.h"
 #include "Estruturas/avl_tree.h"
 
 enum ROUTE_TYPE {
@@ -12,10 +12,9 @@ enum ROUTE_TYPE {
   Provider,
   None
 };
-
-void CommercialRoute (AVLTree * tree, int destination);
-
 char * routeString(enum ROUTE_TYPE route);
-void CommercialRouteHops(AVLTree * tree, int destination);
 
+void CommercialRoute (AVLTree * tree, Domain * destination, int isTopologyConnected, enum ROUTE_TYPE * route_vector);
+void CommercialRouteHops(AVLTree * tree, Domain * destination, int isTopologyConnected, enum ROUTE_TYPE * route_vector, int * n_hops);
+void NoRestrictionHops(AVLTree * tree, Domain * destination, int * n_hops);
 #endif

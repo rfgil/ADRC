@@ -31,3 +31,14 @@ List * removeFirstList(List * list, void ** domain){
   }
   return NULL;
 }
+
+
+int findListItem(List * list, void * item){
+  while (list != NULL ){
+    if(list->item == item){
+      return TRUE;
+    }
+    list = list->next;
+  }
+  return FALSE;
+}

@@ -159,6 +159,22 @@ void * findAvlTree(AVLTree * tree, void * identifier){
   return NULL;
 }
 
+void * getAvlTreeRootNode(AVLTree * tree){
+  return tree->root;
+}
+
+void * getAvlTreeLeftChildNode(void * node){
+  return node == NULL ? NULL : ((Node *)node)->left;
+}
+
+void * getAvlTreeRightChildNode(void * node){
+  return node == NULL ? NULL : ((Node *)node)->right;
+}
+
+void * getAvlTreeNodeItem(void * node){
+  return node == NULL ? NULL : ((Node *)node)->item;
+}
+
 static void freeNodes(Node * node, void (*freeItem)(void *)){
   if (node != NULL){
     freeNodes(node->left, freeItem);

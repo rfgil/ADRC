@@ -1,0 +1,359 @@
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls   s/call   s/call  name    
+ 74.04    388.45   388.45 1957457104     0.00     0.00  addListToFifo
+ 11.24    447.41    58.96    43974     0.00     0.01  Hops
+ 10.62    503.11    55.70    43974     0.00     0.00  CommercialRoute
+  1.44    510.66     7.55 3481518618     0.00     0.00  RemoveFifo
+  1.33    517.66     7.00 2734585293     0.00     0.00  InsertFifo
+  0.57    520.63     2.97 5801621746     0.00     0.00  countElementsAvlTree
+  0.42    522.86     2.22                             main
+  0.28    524.34     1.48        1     1.48     1.48  newAvlTree
+  0.07    524.72     0.38                             getPathInfoId
+  0.07    525.09     0.37   175896     0.00     0.00  newFifo
+  0.02    525.17     0.08   536954     0.00     0.00  findAvlTree
+  0.01    525.22     0.06  6858300     0.00     0.00  compareId_Domain
+  0.01    525.26     0.04   131923     0.00     0.00  freeList
+  0.00    525.27     0.01                             printRouteVector
+  0.00    525.28     0.01    43974     0.00     0.00  freeDomain
+  0.00    525.28     0.00   658033     0.00     0.00  compareDomains
+  0.00    525.28     0.00   246503     0.00     0.00  doNothing
+  0.00    525.28     0.00   246503     0.00     0.00  insertList
+  0.00    525.28     0.00   131923     0.00     0.00  newList
+  0.00    525.28     0.00   131922     0.00     0.00  freeElements
+  0.00    525.28     0.00   131922     0.00     0.00  freeFifo
+  0.00    525.28     0.00    43974     0.00     0.00  createDomain
+  0.00    525.28     0.00    43974     0.00     0.00  getAvlTreeLeftChildNode
+  0.00    525.28     0.00    43974     0.00     0.00  getAvlTreeNodeItem
+  0.00    525.28     0.00    43974     0.00     0.00  getAvlTreeRightChildNode
+  0.00    525.28     0.00    43974     0.00     0.00  insertAvlTree
+  0.00    525.28     0.00    43973     0.00     0.00  insertNode
+  0.00    525.28     0.00    15499     0.00     0.00  leftRotate
+  0.00    525.28     0.00    15477     0.00     0.00  rightRotate
+  0.00    525.28     0.00       78     0.00     0.00  findListItem
+  0.00    525.28     0.00        1     0.00     1.61  LoadTopology
+  0.00    525.28     0.00        1     0.00     0.00  checkConnectivity
+  0.00    525.28     0.00        1     0.00     0.05  freeAvlTree
+  0.00    525.28     0.00        1     0.00     0.05  freeNodes
+  0.00    525.28     0.00        1     0.00     0.05  freeTopology
+  0.00    525.28     0.00        1     0.00     0.00  getAvlTreeRootNode
+  0.00    525.28     0.00        1     0.00     0.00  getTopProviders
+
+ %         the percentage of the total running time of the
+time       program used by this function.
+
+cumulative a running sum of the number of seconds accounted
+ seconds   for by this function and those listed above it.
+
+ self      the number of seconds accounted for by this
+seconds    function alone.  This is the major sort for this
+           listing.
+
+calls      the number of times this function was invoked, if
+           this function is profiled, else blank.
+
+ self      the average number of milliseconds spent in this
+ms/call    function per call, if this function is profiled,
+	   else blank.
+
+ total     the average number of milliseconds spent in this
+ms/call    function and its descendents per call, if this
+	   function is profiled, else blank.
+
+name       the name of the function.  This is the minor sort
+           for this listing. The index shows the location of
+	   the function in the gprof listing. If the index is
+	   in parenthesis it shows where it would appear in
+	   the gprof listing if it were to be printed.
+
+Copyright (C) 2012-2016 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+		     Call graph (explanation follows)
+
+
+granularity: each sample hit covers 2 byte(s) for 0.00% of 525.28 seconds
+
+index % time    self  children    called     name
+                                                 <spontaneous>
+[1]     99.9    2.22  522.66                 main [1]
+               58.96  461.05   43974/43974       Hops [2]
+                0.00    1.61       1/1           LoadTopology [8]
+                0.99    0.00 1933888576/5801621746     countElementsAvlTree [7]
+                0.00    0.05       1/1           freeTopology [17]
+                0.01    0.00   43974/536954      findAvlTree [12]
+                0.00    0.00       1/1           checkConnectivity [20]
+-----------------------------------------------
+               58.96  461.05   43974/43974       main [1]
+[2]     99.0   58.96  461.05   43974         Hops [2]
+              388.45    4.95 1957457104/1957457104     addListToFifo [3]
+               55.70    6.67   43974/43974       CommercialRoute [4]
+                4.20    0.00 1933712676/3481518618     RemoveFifo [5]
+                0.99    0.00 1933844598/5801621746     countElementsAvlTree [7]
+                0.09    0.00   43974/175896      newFifo [11]
+-----------------------------------------------
+              388.45    4.95 1957457104/1957457104     Hops [2]
+[3]     74.9  388.45    4.95 1957457104         addListToFifo [3]
+                4.95    0.00 1933668702/2734585293     InsertFifo [6]
+-----------------------------------------------
+               55.70    6.67   43974/43974       Hops [2]
+[4]     11.9   55.70    6.67   43974         CommercialRoute [4]
+                3.36    0.00 1547805942/3481518618     RemoveFifo [5]
+                2.05    0.00 800916591/2734585293     InsertFifo [6]
+                0.99    0.00 1933844598/5801621746     countElementsAvlTree [7]
+                0.27    0.00  131922/175896      newFifo [11]
+                0.00    0.00  131922/131922      freeFifo [26]
+-----------------------------------------------
+                3.36    0.00 1547805942/3481518618     CommercialRoute [4]
+                4.20    0.00 1933712676/3481518618     Hops [2]
+[5]      1.4    7.55    0.00 3481518618         RemoveFifo [5]
+-----------------------------------------------
+                2.05    0.00 800916591/2734585293     CommercialRoute [4]
+                4.95    0.00 1933668702/2734585293     addListToFifo [3]
+[6]      1.3    7.00    0.00 2734585293         InsertFifo [6]
+-----------------------------------------------
+                0.00    0.00   43974/5801621746     LoadTopology [8]
+                0.99    0.00 1933844598/5801621746     CommercialRoute [4]
+                0.99    0.00 1933844598/5801621746     Hops [2]
+                0.99    0.00 1933888576/5801621746     main [1]
+[7]      0.6    2.97    0.00 5801621746         countElementsAvlTree [7]
+-----------------------------------------------
+                0.00    1.61       1/1           main [1]
+[8]      0.3    0.00    1.61       1         LoadTopology [8]
+                1.48    0.00       1/1           newAvlTree [9]
+                0.07    0.05  492980/536954      findAvlTree [12]
+                0.00    0.00   43974/5801621746     countElementsAvlTree [7]
+                0.00    0.00  246490/246503      insertList [23]
+                0.00    0.00   43974/43974       createDomain [27]
+                0.00    0.00   43974/43974       insertAvlTree [31]
+-----------------------------------------------
+                1.48    0.00       1/1           LoadTopology [8]
+[9]      0.3    1.48    0.00       1         newAvlTree [9]
+-----------------------------------------------
+                                                 <spontaneous>
+[10]     0.1    0.38    0.00                 getPathInfoId [10]
+-----------------------------------------------
+                0.09    0.00   43974/175896      Hops [2]
+                0.27    0.00  131922/175896      CommercialRoute [4]
+[11]     0.1    0.37    0.00  175896         newFifo [11]
+-----------------------------------------------
+                0.01    0.00   43974/536954      main [1]
+                0.07    0.05  492980/536954      LoadTopology [8]
+[12]     0.0    0.08    0.06  536954         findAvlTree [12]
+                0.06    0.00 6858300/6858300     compareId_Domain [13]
+-----------------------------------------------
+                0.06    0.00 6858300/6858300     findAvlTree [12]
+[13]     0.0    0.06    0.00 6858300         compareId_Domain [13]
+-----------------------------------------------
+                0.01    0.04   43974/43974       freeNodes [16]
+[14]     0.0    0.01    0.04   43974         freeDomain [14]
+                0.04    0.00  131922/131923      freeList [18]
+-----------------------------------------------
+                0.00    0.05       1/1           freeTopology [17]
+[15]     0.0    0.00    0.05       1         freeAvlTree [15]
+                0.00    0.05       1/1           freeNodes [16]
+-----------------------------------------------
+                               87948             freeNodes [16]
+                0.00    0.05       1/1           freeAvlTree [15]
+[16]     0.0    0.00    0.05       1+87948   freeNodes [16]
+                0.01    0.04   43974/43974       freeDomain [14]
+                               87948             freeNodes [16]
+-----------------------------------------------
+                0.00    0.05       1/1           main [1]
+[17]     0.0    0.00    0.05       1         freeTopology [17]
+                0.00    0.05       1/1           freeAvlTree [15]
+-----------------------------------------------
+                              246503             freeList [18]
+                0.00    0.00       1/131923      checkConnectivity [20]
+                0.04    0.00  131922/131923      freeDomain [14]
+[18]     0.0    0.04    0.00  131923+246503  freeList [18]
+                0.00    0.00  246503/246503      doNothing [22]
+                              246503             freeList [18]
+-----------------------------------------------
+                                                 <spontaneous>
+[19]     0.0    0.01    0.00                 printRouteVector [19]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[20]     0.0    0.00    0.00       1         checkConnectivity [20]
+                0.00    0.00       1/131923      freeList [18]
+                0.00    0.00      78/78          findListItem [35]
+                0.00    0.00       1/131923      newList [24]
+                0.00    0.00       1/1           getAvlTreeRootNode [36]
+                0.00    0.00       1/1           getTopProviders [37]
+-----------------------------------------------
+                0.00    0.00  658033/658033      insertNode [32]
+[21]     0.0    0.00    0.00  658033         compareDomains [21]
+-----------------------------------------------
+                0.00    0.00  246503/246503      freeList [18]
+[22]     0.0    0.00    0.00  246503         doNothing [22]
+-----------------------------------------------
+                0.00    0.00      13/246503      getTopProviders [37]
+                0.00    0.00  246490/246503      LoadTopology [8]
+[23]     0.0    0.00    0.00  246503         insertList [23]
+-----------------------------------------------
+                0.00    0.00       1/131923      checkConnectivity [20]
+                0.00    0.00  131922/131923      createDomain [27]
+[24]     0.0    0.00    0.00  131923         newList [24]
+-----------------------------------------------
+                0.00    0.00  131922/131922      freeFifo [26]
+[25]     0.0    0.00    0.00  131922         freeElements [25]
+-----------------------------------------------
+                0.00    0.00  131922/131922      CommercialRoute [4]
+[26]     0.0    0.00    0.00  131922         freeFifo [26]
+                0.00    0.00  131922/131922      freeElements [25]
+-----------------------------------------------
+                0.00    0.00   43974/43974       LoadTopology [8]
+[27]     0.0    0.00    0.00   43974         createDomain [27]
+                0.00    0.00  131922/131923      newList [24]
+-----------------------------------------------
+                0.00    0.00   43974/43974       getTopProviders [37]
+[28]     0.0    0.00    0.00   43974         getAvlTreeLeftChildNode [28]
+-----------------------------------------------
+                0.00    0.00   43974/43974       getTopProviders [37]
+[29]     0.0    0.00    0.00   43974         getAvlTreeNodeItem [29]
+-----------------------------------------------
+                0.00    0.00   43974/43974       getTopProviders [37]
+[30]     0.0    0.00    0.00   43974         getAvlTreeRightChildNode [30]
+-----------------------------------------------
+                0.00    0.00   43974/43974       LoadTopology [8]
+[31]     0.0    0.00    0.00   43974         insertAvlTree [31]
+                0.00    0.00   43973/43973       insertNode [32]
+-----------------------------------------------
+                              627057             insertNode [32]
+                0.00    0.00   43973/43973       insertAvlTree [31]
+[32]     0.0    0.00    0.00   43973+627057  insertNode [32]
+                0.00    0.00  658033/658033      compareDomains [21]
+                0.00    0.00   15499/15499       leftRotate [33]
+                0.00    0.00   15477/15477       rightRotate [34]
+                              627057             insertNode [32]
+-----------------------------------------------
+                0.00    0.00   15499/15499       insertNode [32]
+[33]     0.0    0.00    0.00   15499         leftRotate [33]
+-----------------------------------------------
+                0.00    0.00   15477/15477       insertNode [32]
+[34]     0.0    0.00    0.00   15477         rightRotate [34]
+-----------------------------------------------
+                0.00    0.00      78/78          checkConnectivity [20]
+[35]     0.0    0.00    0.00      78         findListItem [35]
+-----------------------------------------------
+                0.00    0.00       1/1           checkConnectivity [20]
+[36]     0.0    0.00    0.00       1         getAvlTreeRootNode [36]
+-----------------------------------------------
+                               87948             getTopProviders [37]
+                0.00    0.00       1/1           checkConnectivity [20]
+[37]     0.0    0.00    0.00       1+87948   getTopProviders [37]
+                0.00    0.00   43974/43974       getAvlTreeLeftChildNode [28]
+                0.00    0.00   43974/43974       getAvlTreeRightChildNode [30]
+                0.00    0.00   43974/43974       getAvlTreeNodeItem [29]
+                0.00    0.00      13/246503      insertList [23]
+                               87948             getTopProviders [37]
+-----------------------------------------------
+
+ This table describes the call tree of the program, and was sorted by
+ the total amount of time spent in each function and its children.
+
+ Each entry in this table consists of several lines.  The line with the
+ index number at the left hand margin lists the current function.
+ The lines above it list the functions that called this function,
+ and the lines below it list the functions this one called.
+ This line lists:
+     index	A unique number given to each element of the table.
+		Index numbers are sorted numerically.
+		The index number is printed next to every function name so
+		it is easier to look up where the function is in the table.
+
+     % time	This is the percentage of the `total' time that was spent
+		in this function and its children.  Note that due to
+		different viewpoints, functions excluded by options, etc,
+		these numbers will NOT add up to 100%.
+
+     self	This is the total amount of time spent in this function.
+
+     children	This is the total amount of time propagated into this
+		function by its children.
+
+     called	This is the number of times the function was called.
+		If the function called itself recursively, the number
+		only includes non-recursive calls, and is followed by
+		a `+' and the number of recursive calls.
+
+     name	The name of the current function.  The index number is
+		printed after it.  If the function is a member of a
+		cycle, the cycle number is printed between the
+		function's name and the index number.
+
+
+ For the function's parents, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the function into this parent.
+
+     children	This is the amount of time that was propagated from
+		the function's children into this parent.
+
+     called	This is the number of times this parent called the
+		function `/' the total number of times the function
+		was called.  Recursive calls to the function are not
+		included in the number after the `/'.
+
+     name	This is the name of the parent.  The parent's index
+		number is printed after it.  If the parent is a
+		member of a cycle, the cycle number is printed between
+		the name and the index number.
+
+ If the parents of the function cannot be determined, the word
+ `<spontaneous>' is printed in the `name' field, and all the other
+ fields are blank.
+
+ For the function's children, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the child into the function.
+
+     children	This is the amount of time that was propagated from the
+		child's children to the function.
+
+     called	This is the number of times the function called
+		this child `/' the total number of times the child
+		was called.  Recursive calls by the child are not
+		listed in the number after the `/'.
+
+     name	This is the name of the child.  The child's index
+		number is printed after it.  If the child is a
+		member of a cycle, the cycle number is printed
+		between the name and the index number.
+
+ If there are any cycles (circles) in the call graph, there is an
+ entry for the cycle-as-a-whole.  This entry shows who called the
+ cycle (as parents) and the members of the cycle (as children.)
+ The `+' recursive calls entry shows the number of function calls that
+ were internal to the cycle, and the calls entry for each member shows,
+ for that member, how many times it was called from other members of
+ the cycle.
+
+Copyright (C) 2012-2016 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+Index by function name
+
+   [4] CommercialRoute        [35] findListItem           [37] getTopProviders
+   [2] Hops                   [15] freeAvlTree            [31] insertAvlTree
+   [6] InsertFifo             [14] freeDomain             [23] insertList
+   [8] LoadTopology           [25] freeElements           [32] insertNode
+   [5] RemoveFifo             [26] freeFifo               [33] leftRotate
+   [3] addListToFifo          [18] freeList                [1] main
+  [20] checkConnectivity      [16] freeNodes               [9] newAvlTree
+  [21] compareDomains         [17] freeTopology           [11] newFifo
+  [13] compareId_Domain       [28] getAvlTreeLeftChildNode [24] newList
+   [7] countElementsAvlTree   [29] getAvlTreeNodeItem     [19] printRouteVector
+  [27] createDomain           [30] getAvlTreeRightChildNode [34] rightRotate
+  [22] doNothing              [36] getAvlTreeRootNode
+  [12] findAvlTree            [10] getPathInfoId

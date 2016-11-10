@@ -13,6 +13,11 @@ void * findAvlTree(AVLTree * tree, void * identifier);
 
 int countElementsAvlTree(AVLTree * tree);
 
+void * getAvlTreeRootNode(AVLTree * tree);
+void * getAvlTreeLeftChildNode(void * node);
+void * getAvlTreeRightChildNode(void * node);
+void * getAvlTreeNodeItem(void * node);
+
 void freeAvlTree(AVLTree * tree, void (*freeItem)(void *));
 
 #endif

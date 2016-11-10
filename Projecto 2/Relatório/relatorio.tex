@@ -1,0 +1,213 @@
+\documentclass{article}
+\usepackage[portuges]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in, includefoot,footskip=30pt,]{geometry} %Equivalente a fullpage sem estragar o cabeçalho e rodapé
+
+\usepackage{graphicx} %Permite inserir imagens
+\usepackage{mathtools} % mathtools loads the amsmath package automatically
+\usepackage{amssymb}
+
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}%
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}%
+
+\usepackage{float}
+
+\usepackage[hidelinks=true]{hyperref}
+
+\usepackage{enumitem} % Permite adicionar tab a itemizes
+\usepackage{indentfirst}
+\usepackage{subcaption}
+
+
+% ----- Definiçoes para as tabelas -----
+\usepackage{tabularx}
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
+
+
+% ----- Cabeçalho e rodapé -----
+\usepackage{color}
+%\usepackage{xcolor}
+\definecolor{light-gray}{gray}{0.80}
+\definecolor{mylight-gray}{gray}{0.30}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+
+\renewcommand{\headrulewidth}{1pt}
+\renewcommand{\footrulewidth}{0.5pt}
+
+\rhead{\textbf{\large{\textbf{\textsc{Algoritmia e Desempenho em Redes de Computadores}}}} \\ \textsc{Inter-domain routing}}
+\lhead{\includegraphics[scale=0.7]{capa/IST_Logo.png}}
+\rfoot{\textsc{\textcolor{mylight-gray}{Página} \thepage}}
+
+\usepackage{etoolbox}
+\patchcmd{\headrule}{\hrule}{\color{light-gray}\hrule}{}{}
+\patchcmd{\footrule}{\hrule}{\color{light-gray}\hrule}{}{}
+
+
+% ----- Comandos Personalizados -----
+\newcommand{\betamaisum}[0]{\ensuremath{\left( \beta + 1 \right)}}
+
+\newcommand{\volt}[0]{\ensuremath{\ V}}
+\newcommand{\mvolt}[0]{\ensuremath{\ mV}}
+\newcommand{\uvolt}[0]{\ensuremath{\ \mu V}}
+
+\newcommand{\amp}[0]{\ensuremath{\ A}}
+\newcommand{\mamp}[0]{\ensuremath{\ mA}}
+\newcommand{\uamp}[0]{\ensuremath{\ \mu A}}
+
+\newcommand{\mohm}[0]{\ensuremath{\ m \Omega}}
+\newcommand{\ohm}[0]{\ensuremath{\ \Omega}}
+\newcommand{\kohm}[0]{\ensuremath{\ k\Omega}}
+
+\newcommand{\siemen}{\ensuremath{\ S}}
+\newcommand{\msiemen}{\ensuremath{\ mS}}
+\newcommand{\usiemen}{\ensuremath{\ \mu S}}
+\newcommand{\Msiemen}{\ensuremath{\ MS}}
+
+\newcommand{\pfarad}{\ensuremath{\ pF}}
+\newcommand{\ufarad}{\ensuremath{\ \mu F}}
+\newcommand{\nfarad}{\ensuremath{\ nF}}
+
+\newcommand{\Hz}{\ensuremath{\ Hz}}
+\newcommand{\kHz}{\ensuremath{\ kHz}}
+
+\newcommand{\dB}{\ensuremath{\ dB}}
+
+
+\newcommand{\dez}[1]{\ensuremath{\cdot 10^{#1}}}
+
+\newcommand{\barravertical}{\ensuremath{\biggr\rvert}}
+
+% ----- Template para secções subsecções -----
+\usepackage[explicit]{titlesec}
+\usepackage{color, colortbl}
+\usepackage[usenames,dvipsnames]{xcolor}
+
+\titleformat{\section}
+	{\normalfont\Large\scshape}{}{0em}{%\setlength
+	%\fboxsep{9pt}
+	%\colorbox{NavyBlue}
+	{\parbox{\dimexpr\textwidth-2\fboxsep\relax}{
+	\ifnum\thesection>0
+		\thesection\quad#1
+	\else
+		#1
+	\fi}}}
+
+\titleformat{\subsection}{\normalfont\scshape\large}{}{0em}{{#1}}%\thesubsection \ #1}}
+\titleformat{\subsubsection}{\normalfont\scshape}{}{0em}{{#1}}%\thesubsubsection \ #1}}
+\titleformat{\paragraph}{\normalfont\scshape\small}{}{0em}{{#1}}
+
+%\newcommand{\sectionbreak}{\clearpage} %Faz page break antes de cada secção
+
+\usepackage{pdfpages}
+\usepackage[siunitx]{circuitikz}
+
+
+
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+
+\makeatletter
+\renewcommand{\ALG@name}{Algoritmo}
+\makeatother
+
+\makeatletter
+\newenvironment{breakablealgorithm}
+  {% \begin{breakablealgorithm}
+   \begin{center}
+     \refstepcounter{algorithm}% New algorithm
+     \hrule height.8pt depth0pt \kern2pt% \@fs@pre for \@fs@ruled
+     \renewcommand{\caption}[2][\relax]{% Make a new \caption
+       {\raggedright\textbf{\ALG@name~\thealgorithm} ##2\par}%
+       \ifx\relax##1\relax % #1 is \relax
+         \addcontentsline{loa}{algorithm}{\protect\numberline{\thealgorithm}##2}%
+       \else % #1 is not \relax
+         \addcontentsline{loa}{algorithm}{\protect\numberline{\thealgorithm}##1}%
+       \fi
+       \kern2pt\hrule\kern2pt
+     }
+  }{% \end{breakablealgorithm}
+     \kern2pt\hrule\relax% \@fs@post for \@fs@ruled
+   \end{center}
+  }
+\makeatother
+
+
+% ----- DOCUMENTO -----
+\begin{document}
+
+% Inclui a capa (existem pacotes especificos que interferem com os existentes neste documento)
+\includepdf[pages={1}]{capa/capa.pdf}
+\setcounter{page}{1}
+
+\subsection{Algoritmo \texttt{CommercialRoute}}
+
+Com este algoritmo pretende-se descobrir qual o tipo de rota comercial mais favorável a um determinado domínio para chegar a um dado domínio de destino.
+
+\begin{algorithm}[H]
+\caption{}
+\label{al:generatecode}
+\begin{algorithmic}
+\Function{CommercialRoute}{$s$}
+	\For {all vertices $v$}
+		\State $visisted[v] := false$
+	\EndFor
+	
+	\State $visisted[s] := true$
+	\State $domain := s$; $domain\_route := Itself$
+	
+	\State $fifo\_clients := \emptyset$; 
+	$fifo\_peers := \emptyset$;
+	$fifo\_providers := \emptyset$
+	
+	\State
+	
+	\While{$domain \neq NIL $}		
+
+		\State\Call{EvaluateLinks}{all vertices $v$ clients of $domain$, $fifo\_providers$, $visited$}
+				
+		\If {$domain\_route = Client$ \textbf{or} $domain\_route := Itself$}
+			\State\Call{EvaluateLinks}{all vertices $v$ peers of $domain$, $fifo\_peers$, $visited$}			
+			\State\Call{EvaluateLinks}{all vertices $v$ providers of $domain$, $fifo\_clients$, $visited$}
+		\EndIf
+		
+		\State\Call{Output}{$domain$, $domain\_route$}
+		\State
+		\State $domain := \Call{RemoveFifo}{fifo\_clients}$
+		\State $domain\_route := Client$
+		\If { $domain = NIL$ }
+			\State $domain := \Call{RemoveFifo}{fifo\_peers}$
+			\State $domain\_route := Peer$
+			\If { $domain = NIL$ }
+				\State $domain := \Call{RemoveFifo}{fifo\_providers}$
+				\State $domain\_route := Provider$
+			\EndIf
+		\EndIf		
+	\EndWhile
+\EndFunction
+\State
+\Function {EvaluateLinks}{$vertices$, $destination\_list$, $visited$}
+	\For {all vertices $v$}
+		\If {$visited[v] = false$}
+			\State $visited[v] := true$
+			\State $destination\_list := destination\_list \cup v$
+		\EndIf			
+	\EndFor
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+A representação dos domínios e as suas ligações não constitui uma árvore devido às ligações entre pares, que permitem a existência de ciclos violando assim a condição de árvore. No entanto, não é possível é possível que um domínio seja fornecedor de um domínio do qual um dos seus fornecedores depende
+
+
+
+
+O funcionamento deste algoritmo é baseado no algoritmo de pesquisa em largura em árvores: BFS (\textit{Breadth-first search}).
+
+
+
+\end{document}
+

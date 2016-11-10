@@ -17,7 +17,6 @@ static int compare(int a, int b){
   }
 }
 
-
 static int compareDomains(void * item1, void * item2){
   //Compara dois dominios
   int id1 = ((Domain *) item1)->id;
@@ -40,6 +39,11 @@ Domain * createDomain(int id){
 
   new = malloc(sizeof(Domain));
   new->id = id;
+
+  new->n_clients  = 0;
+  new->n_peers  = 0;
+  new->n_providers  = 0;
+
   new->clients = newList();
   new->providers = newList();
   new->peers = newList();
@@ -47,7 +51,7 @@ Domain * createDomain(int id){
   return new;
 }
 
-AVLTree * LoadTopology(FILE * network_file){
+AVLTree * LoadTopology(FILE * network_file, int * idPosition){
   AVLTree * tree;
   Domain * DomainTail, * DomainHead;
   int head, tail, type;
@@ -62,11 +66,13 @@ AVLTree * LoadTopology(FILE * network_file){
     if (DomainTail == NULL){
       DomainTail = createDomain(tail);
       DomainTail->position = countElementsAvlTree(tree);
+      idPosition[DomainTail->position] = DomainTail->id;
       insertAvlTree(tree, DomainTail);
     }
     if (DomainHead == NULL){
       DomainHead = createDomain(head);
       DomainHead->position = countElementsAvlTree(tree);
+      idPosition[DomainHead->position] = DomainHead->id;
       insertAvlTree(tree, DomainHead);
     }
 
@@ -74,14 +80,17 @@ AVLTree * LoadTopology(FILE * network_file){
     switch (type) {
       case 1: //Provider: Tail é fornecedor da Head -> A Head tem que ir para a lista de clientes da Tail.
         DomainTail->clients = insertList(DomainTail->clients, DomainHead);
+        DomainTail->n_clients += 1;
         break;
 
       case 2: //Peer: Tail é par da Head -> A Head tem que ir para a lista de pares da Tail.
         DomainTail->peers = insertList(DomainTail->peers, DomainHead);
+        DomainTail->n_peers += 1;
         break;
 
       case 3: //Client: Tail é cliente da Head -> A Head tem que ir para a lista de fornecedores da Tail.
         DomainTail->providers = insertList(DomainTail->providers, DomainHead);
+        DomainTail->n_providers += 1;
         break;
 
       default:
@@ -91,6 +100,61 @@ AVLTree * LoadTopology(FILE * network_file){
   }
 
   return tree;
+}
+
+static void getTopProviders(void * AvlTreeNode, List ** list, int * count){
+  Domain * domain;
+
+  if (AvlTreeNode == NULL){
+    return;
+  }
+
+  // Percorre todos os elementos da AVL Tree
+  getTopProviders(getAvlTreeLeftChildNode(AvlTreeNode), list, count); // Avalia o filho à esquerda
+  getTopProviders(getAvlTreeRightChildNode(AvlTreeNode), list, count); // Avalia o filho à direita
+
+  domain = getAvlTreeNodeItem(AvlTreeNode);
+  if (domain->n_providers == 0){
+    *list = insertList(*list, domain);
+    *count += 1;
+  }
+}
+
+int checkConnectivity(AVLTree * tree){
+  List * top_providers, * aux1, * aux2;
+  int n_top_providers, result;
+  Domain * domain;
+
+  top_providers = newList();
+  n_top_providers = 0;
+
+  getTopProviders(getAvlTreeRootNode(tree), &top_providers, &n_top_providers);
+
+  // Verifica se todos os providers de topo são pares entre si
+  aux1 = top_providers;
+  result = TRUE;
+  while(aux1 != NULL){
+    domain = ((Domain *)aux1->item);
+    aux1 = aux1->next; // Passa para o o dominio de topo seguinte
+
+    // aux2 já é o elemento seguinte da lista de dominios de topo
+    // (não faz sentido confirmar se o próprio dominio está na sua lista de peers)
+    aux2 = aux1;
+
+    // Verifica se todos os restantes dominios de topo estão na lista de pares do domino a avaliar
+    // (Não é necessário verificar os elementos anteriores uma vez que a ligação é reciproca)
+    while( aux2 != NULL ){
+      if (findListItem(domain->peers, aux2->item) == FALSE){
+        result = FALSE;
+        aux1 = NULL; // Condição para sair do segundo while
+        break;
+      };
+      aux2 = aux2->next;
+    }
+  }
+
+  freeList(top_providers, doNothing);
+  return result;
 }
 
 static void freeDomain(void * item){
