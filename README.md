@@ -24,4 +24,10 @@ Responder à questão:
 Quao mais longe é o caminho quando estou restrito a rotas comercias?
 
 
+---
+
+## Projecto 2
+### Edge-connectivity in graphs
+
+
 `Substituir flags -Wall e -g por -O para melhor performance`
