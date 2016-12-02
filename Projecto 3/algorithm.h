@@ -3,6 +3,8 @@
 
 #include "Estruturas/list.h"
 
-void getDisjointPaths(int startNode, int destNode, List ** node_vector);
+int getDisjointPaths(int startNode, int destNode, List ** node_vector, List * edgeList);
+
+List * findMinimumEdgesToDisconnect(int startNode, int destNode, List ** node_vector);
 
 #endif

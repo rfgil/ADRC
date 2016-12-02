@@ -15,10 +15,21 @@ typedef struct edge {
   int node1;
   int node2;
 
-  int fluxFoward;   // Fluxo do node1 para node2
-  int fluxBackward; // Fluxo do node2 para node1
+  int flowFoward;   // Flow do node1 para node2
+  int flowBackward; // Flow do node2 para node1
 } Edge;
 
 List * LoadTopology(FILE * network_file, List ** node_vector);
+
+int getNeighborNode(Edge * edge, int currentNode);
+
+int edgeAllowsAugmenting(int originNode, Edge * edge);
+
+int hasFlow(Edge * edge);
+int canCrossEdgeResidualGraph(int originNode, Edge * edge);
+
+void insertFlow(int originNode, Edge * edge);
+
+void freeTopology(List ** node_vector);
 
 #endif

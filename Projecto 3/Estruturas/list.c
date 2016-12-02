@@ -25,9 +25,13 @@ void freeList(List * element, void (*freeItem)(void *)){
 }
 
 List * removeFirstList(List * list, void ** item){
+  List * head;
+
   if (list != NULL){
     (*item) =  list->item;
-    return list->next;
+    head = list->next;
+    free(list);
+    return head;;
   }
   return NULL;
 }
