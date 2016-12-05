@@ -1,0 +1,307 @@
+\documentclass{article}
+\usepackage[portuges]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in, includefoot,footskip=30pt,]{geometry} %Equivalente a fullpage sem estragar o cabeçalho e rodapé
+
+\usepackage{graphicx} %Permite inserir imagens
+\usepackage{mathtools} % mathtools loads the amsmath package automatically
+\usepackage{amssymb}
+
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}%
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}%
+
+\usepackage{float}
+
+\usepackage[hidelinks=true]{hyperref}
+
+\usepackage{enumitem} % Permite adicionar tab a itemizes
+\usepackage{indentfirst}
+\usepackage{subcaption}
+
+
+% ----- Definiçoes para as tabelas -----
+\usepackage{tabularx}
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
+
+
+% ----- Cabeçalho e rodapé -----
+\usepackage{color}
+%\usepackage{xcolor}
+\definecolor{light-gray}{gray}{0.80}
+\definecolor{mylight-gray}{gray}{0.30}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+
+\renewcommand{\headrulewidth}{1pt}
+\renewcommand{\footrulewidth}{0.5pt}
+
+\rhead{\textbf{\large{\textbf{\textsc{Algoritmia e Desempenho em Redes de Computadores}}}} \\ \textsc{Edge-connectivity in graphs}}
+\lhead{\includegraphics[scale=0.7]{capa/IST_Logo.png}}
+\rfoot{\textsc{\textcolor{mylight-gray}{Página} \thepage}}
+
+\usepackage{etoolbox}
+\patchcmd{\headrule}{\hrule}{\color{light-gray}\hrule}{}{}
+\patchcmd{\footrule}{\hrule}{\color{light-gray}\hrule}{}{}
+
+
+% ----- Comandos Personalizados -----
+\newcommand{\betamaisum}[0]{\ensuremath{\left( \beta + 1 \right)}}
+
+\newcommand{\volt}[0]{\ensuremath{\ V}}
+\newcommand{\mvolt}[0]{\ensuremath{\ mV}}
+\newcommand{\uvolt}[0]{\ensuremath{\ \mu V}}
+
+\newcommand{\amp}[0]{\ensuremath{\ A}}
+\newcommand{\mamp}[0]{\ensuremath{\ mA}}
+\newcommand{\uamp}[0]{\ensuremath{\ \mu A}}
+
+\newcommand{\mohm}[0]{\ensuremath{\ m \Omega}}
+\newcommand{\ohm}[0]{\ensuremath{\ \Omega}}
+\newcommand{\kohm}[0]{\ensuremath{\ k\Omega}}
+
+\newcommand{\siemen}{\ensuremath{\ S}}
+\newcommand{\msiemen}{\ensuremath{\ mS}}
+\newcommand{\usiemen}{\ensuremath{\ \mu S}}
+\newcommand{\Msiemen}{\ensuremath{\ MS}}
+
+\newcommand{\pfarad}{\ensuremath{\ pF}}
+\newcommand{\ufarad}{\ensuremath{\ \mu F}}
+\newcommand{\nfarad}{\ensuremath{\ nF}}
+
+\newcommand{\Hz}{\ensuremath{\ Hz}}
+\newcommand{\kHz}{\ensuremath{\ kHz}}
+
+\newcommand{\dB}{\ensuremath{\ dB}}
+
+
+\newcommand{\dez}[1]{\ensuremath{\cdot 10^{#1}}}
+
+\newcommand{\barravertical}{\ensuremath{\biggr\rvert}}
+
+% ----- Template para secções subsecções -----
+\usepackage[explicit]{titlesec}
+\usepackage{color, colortbl}
+\usepackage[usenames,dvipsnames]{xcolor}
+
+\titleformat{\section}
+	{\normalfont\Large\scshape}{}{0em}{%\setlength
+	%\fboxsep{9pt}
+	%\colorbox{NavyBlue}
+	{\parbox{\dimexpr\textwidth-2\fboxsep\relax}{
+	\ifnum\thesection>0
+		\thesection\quad#1
+	\else
+		#1
+	\fi}}}
+
+\titleformat{\subsection}{\normalfont\scshape\large}{}{0em}{{#1}}%\thesubsection \ #1}}
+\titleformat{\subsubsection}{\normalfont\scshape}{}{0em}{{#1}}%\thesubsubsection \ #1}}
+\titleformat{\paragraph}{\normalfont\scshape\small}{}{0em}{{#1}}
+
+%\newcommand{\sectionbreak}{\clearpage} %Faz page break antes de cada secção
+
+\usepackage{pdfpages}
+
+\usepackage{xcolor}
+\usepackage{pgfplots}
+\usepackage{tikz}
+
+\usepackage{bchart}
+
+% Define bar chart colors
+%
+\definecolor{bblue}{HTML}{4F81BD}
+\definecolor{rred}{HTML}{C0504D}
+\definecolor{ggreen}{HTML}{9BBB59}
+\definecolor{ppurple}{HTML}{9F4C7C}
+
+
+
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+
+\makeatletter
+\renewcommand{\ALG@name}{Algoritmo}
+\makeatother
+
+\makeatletter
+\newenvironment{breakablealgorithm}
+  {% \begin{breakablealgorithm}
+   \begin{center}
+     \refstepcounter{algorithm}% New algorithm
+     \hrule height.8pt depth0pt \kern2pt% \@fs@pre for \@fs@ruled
+     \renewcommand{\caption}[2][\relax]{% Make a new \caption
+       {\raggedright\textbf{\ALG@name~\thealgorithm} ##2\par}%
+       \ifx\relax##1\relax % #1 is \relax
+         \addcontentsline{loa}{algorithm}{\protect\numberline{\thealgorithm}##2}%
+       \else % #1 is not \relax
+         \addcontentsline{loa}{algorithm}{\protect\numberline{\thealgorithm}##1}%
+       \fi
+       \kern2pt\hrule\kern2pt
+     }
+  }{% \end{breakablealgorithm}
+     \kern2pt\hrule\relax% \@fs@post for \@fs@ruled
+   \end{center}
+  }
+\makeatother
+
+
+% ----- DOCUMENTO -----
+\begin{document}
+
+% Inclui a capa (existem pacotes específicos que interferem com os existentes neste documento)
+\includepdf[pages={1}]{capa/capa.pdf}
+\setcounter{page}{1}
+
+\section{Implementação}
+
+Pretende-se implementar um algoritmo que permita determinar o conjunto mínimo de arestas de um grafo não direcionado de forma a separar dois dados nós. Por outras palavras, pretende-se encontrar o corte mínimo que coloque os dois nós em conjuntos distintos.
+
+Sabe-se da teoria que calcular um corte mínimo é possível através do calculo do fluxo máximo de um grafo que pode ser computado recorrendo ao algoritmo de \textit{Ford–Fulkerson}.
+
+Este algoritmo permite calcular o fluxo máximo entre dois nós num grafo direcionado. Para o adaptar a um grafo não direcionado é necessário considerar que cada aresta corresponde a duas ligações em sentidos opostos. Uma vez que todas as arestas são igualmente utilizáveis define-se um fluxo máximo de 1 para todas elas e com isto o calculco de fluxo máximo corresponderá também ao número de caminhos dijsuntos desde o nó de origem até ao destino.
+
+Com estas definições é então possível implementar o algoritmo de \textit{Ford–Fulkerson}.
+
+\begin{algorithm}[H]
+\caption{Ford–Fulkerson}
+\label{al:Fordfulkerson}
+\begin{algorithmic}[1]
+\Function{getDisjointPaths}{$G$}
+	\For {all edges $uv$}
+		\State $f[u,v] := 0$
+		\State $f[v,u] := 0$
+	\EndFor
+	
+	\While {There is a path $P$ from $s$ to $t$ in the residual network $G_{f}$}
+	\Comment Augmenting path
+    \For {each $uv \in E(P)$}
+      \State $f[u,v] := 1$
+	  	\State $f[v,u] := 0$
+    \EndFor
+	\EndWhile
+	
+	\State \textbf{return} \Call{Count}{flux entering node $t$}
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+Este algoritmo começa por inicializar os valores de fluxo em todas as arestas. De seguida inicia a sua busca por caminhos aumentativos. Sempre que é encontrado um caminho desde a origem até ao destino, tendo em conta o fluxo máximo que pode atravessar cada aresta, o fluxo das arestas que o constituem são colocados ao máximo: 1.
+
+\begin{algorithm}[H]
+\caption{Augmenting Path}
+\label{al:AugmentingPath}
+\begin{algorithmic}[1]
+\Function{Augmenting\_Path}{$G$, $visited$, $u$}
+  
+  \State $visited[u] =$ \textbf{true}
+  
+  \If {$u = s$}
+    \State \textbf{return true}
+  \EndIf
+  
+  \For {all edges, $uv$, of $u$}
+    \If {\textbf{not} $visited[v]$ \textbf{and} \Call{Augmenting\_Path}{$G$, $visited$, $v$}}
+      \State $f[u,v] := 1$
+	  	\State $f[v,u] := 0$
+	  	\State \textbf{return true}
+    \EndIf
+  \EndFor  
+	
+	\State \textbf{return} \textbf{false}
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+A função para encontrar caminhos aumentativos, simplificada nas linhas 6 a 10 do algoritmo \ref{al:Fordfulkerson}, baseia-se no algoritmo de procura em profundidade, BFS. E é implementada por recorrencia, como se observa com maior detalhe no algoritmo \ref{al:AugmentingPath}.
+
+Uma vez que as capacidades de todas as ligações é um numero inteiro é garantido que o algoritmo de \textit{Ford–Fulkerson} termine. A complexidade deste algoritmo é $\mathcal{O}(n\cdot m^2)$ uma vez que é necessário procurar no limite $n\cdot m$ caminhos aumentativos e para cada caminho aumentativo são necessárias $m$ iterações. 
+
+Com isto é possível calcular o número de caminhos disjuntos desde a origem até ao destino e obter o grafo residual. O grafo residual é importante para a próxima etapa em que se pretende descobrir qual o conjunto mínimo de arestas a remover para separar estes dois nós.
+
+Isto porque depois de calculado o fluxo máximo é garantido que não existe um caminho no grafo residual desde a origem até ao destino. Assim sendo para descobrir as arestas do corte mínimo é necessário descobrir quais permitem a ligação entre nós a que é possível chegar (no grafo residual) a partir da origem e os nós a que é possível chegar a partir do destino.
+
+O algoritmo para conseguir este resultado é uma simples BFS. No entanto os nós em vez de marcados como visitados são marcados com um número que identifica se lhes foi possivel chegar a partir da origem ou do destino.
+
+\begin{algorithm}[H]
+\caption{}
+\label{al:walkResidualGraph}
+\begin{algorithmic}[1]
+\Function{walkResidualGraph}{$G$, $visited$, $u$}
+  
+  \State $visited[u] = ORIGIN$
+   
+  \For {all edges, $uv$, of $u$}
+    \If {$visited[v]$ != $ORIGIN$ \textbf{and} \Call{canCrossResidualGraph}{$uv$}}
+      \State \Call{walkResidualGraph}{$G$, $visited$, $v$}
+    \EndIf
+  \EndFor  
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+Utilizando o mesmo vetor $visited$, é agora executado o seguinte algoritmo \ref{al:findMinimumCut}. Desta vez a partir do nó de destino.
+
+
+\begin{algorithm}[H]
+\caption{}
+\label{al:findMinimumCut}
+\begin{algorithmic}[1]
+\Function{findMinimumCut}{$G$, $visited$, $u$}
+  
+  \State $visited[u] = DESTINATION$
+   
+  \For {all edges, $uv$, of $u$}
+    \If {$visited[v]$ = $ORIGIN$}
+      \State $uv$ belongs to the minimum cut set \\
+\ \ \ \ \ \ \ \ \  \textbf{else if} {$visited[v]$ != $DESTINATION$ \textbf{and} \Call{canCrossResidualGraph}{$uv$}} \textbf{then}
+      \State \Call{findMinimumCut}{$G$, $visited$, $v$}
+    \EndIf
+  \EndFor  
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+Este conjunto de algoritmos tem uma complexidade de $\mathcal{O}(m)$ uma vez que são visitados todos os nós e todas as suas arestas.
+
+De seguida pretende-se uma nova funcionalidade para o programa. Pretende-se que seja possível calcular a quantidade de pares de nós cuja separação tenha tenha $k$ arestas. Para calcular este resultado é apenas necessário executar o algoritmo \ref{al:Fordfulkerson}, \texttt{getDisjointPaths}, para todas as combinações de pares de nós.
+
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}{.3\textwidth}
+  \centering
+  \includegraphics[width=.9\linewidth]{grafo.png}
+  \caption{Grafo}
+  \label{fig:sub1}
+\end{subfigure}%
+\begin{subfigure}{.6\textwidth}
+  \centering
+  \begin{bchart}[step=20,max=100, unit=\%]
+        \bclabel{$k$}
+        \bcbar[text=1]{34.55}%19 {\footnotesize $34,55\%$ }}
+            \smallskip
+        \bcbar[text=2]{54.55} %{\footnotesize $54,55\%$ }}
+            \smallskip
+        \bcbar[text=3]{10.90} %{\footnotesize $10,90\%$ }}
+    \end{bchart}
+  \caption{Percentagem de pares de nós separados por $k$ arestas.}
+  \label{fig:sub2}
+\end{subfigure}
+\caption{Exemplo}
+\label{fig:test}
+\end{figure}
+
+Por último é pedido que seja implementada uma função que calcule a \textit{edge-connectivity} do grafo em estudo e forneça um conjunto de arestas que sustente essa afirmação. A \textit{edge-connectivity} é o número mínimo de arestas que é necessário remover para separar o grafo em dois conjuntos diferentes. Uma vez mais é necessário executar o algoritmo \ref{al:Fordfulkerson}, \texttt{getDisjointPaths}, para todas as combinações de pares de nós. 
+
+Deve ser inicializada uma variável chamada \texttt{edge-connectivity} com o valor infinito. Sempre que for encontrado um par de nós com um número de caminhos disjuntos inferior a \texttt{edge-connectivity}, o valor desta é atualizado para o número de caminhos disjuntos obtido e de seguida deve ser calculado qual o corte mínimo associado.
+
+\section{Discussão}
+
+O tópico dos fluxos é importante na medida em que existem vários problemas que podem ser reduzidos a esta topologia e assim resolvidos tendo por base as suas definições. Com este trabalho esteve-se diretamente em contacto com este facto, uma vez que o problema do conjunto de arestas que forma o corte mínimo de um grafo não está à primeira vista relacionado com um problema de fluxo.
+
+Foi também possível tomar consciência do custo computacional associado a este algoritmo de complexidade polinomial. Uma vez problemas com uma quantidade considerável de vértices implica algum tempo de espera pelo resultado do algoritmo.
+
+\end{document}
